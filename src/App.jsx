@@ -20,8 +20,6 @@ function App() {
         <div className="flex-1 ml-64">
           <div className="p-6">
             <Routes>
-              {/* Default redirect to dashboard */}
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
               
               {/* Dashboard */}
               <Route path="/" element={<Dashboard />} />
@@ -33,9 +31,6 @@ function App() {
               <Route path="/admin/gallery" element={<AdminGallery />} />
               <Route path="/admin/feature" element={<AdminFeature />} />
               <Route path="/admin/community" element={<Admincommunity />} />
-              
-              {/* 404 Page */}
-              <Route path="*" element={<div className="text-center py-10"><h1 className="text-2xl font-bold text-gray-600">Page Not Found</h1></div>} />
             </Routes>
           </div>
         </div>

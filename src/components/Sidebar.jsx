@@ -7,7 +7,7 @@ const Sidebar = () => {
   const menuItems = [
     {
       title: 'Dashboard',
-      path: '/dashboard',
+      path: '/',
       icon: '📊'
     },
     {

@@ -21,10 +21,10 @@ function App() {
           <div className="p-6">
             <Routes>
               {/* Default redirect to dashboard */}
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/" element={<Navigate to="/" replace />} />
               
               {/* Dashboard */}
-              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/" element={<Dashboard />} />
               
               {/* Admin Components */}
               <Route path="/admin/hero" element={<AdminHero />} />

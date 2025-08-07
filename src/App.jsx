@@ -24,7 +24,7 @@ function App() {
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
               
               {/* Dashboard */}
-              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/" element={<Dashboard />} />
               
               {/* Admin Components */}
               <Route path="/admin/hero" element={<AdminHero />} />

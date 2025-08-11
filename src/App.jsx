@@ -31,6 +31,9 @@ function App() {
               <Route path="/gallery" element={<AdminGallery />} />
               <Route path="/feature" element={<AdminFeature />} />
               <Route path="/community" element={<Admincommunity />} />
+              
+              {/* Catch-all route for 404 - redirect to dashboard */}
+              <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </div>
         </div>

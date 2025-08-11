@@ -25,12 +25,12 @@ function App() {
               <Route path="/" element={<Dashboard />} />
               
               {/* Admin Components */}
-              <Route path="/admin/hero" element={<AdminHero />} />
-              <Route path="/admin/scroller" element={<AdminScroller />} />
-              <Route path="/admin/photo" element={<AdminPhoto />} />
-              <Route path="/admin/gallery" element={<AdminGallery />} />
-              <Route path="/admin/feature" element={<AdminFeature />} />
-              <Route path="/admin/community" element={<Admincommunity />} />
+              <Route path="/hero" element={<AdminHero />} />
+              <Route path="/scroller" element={<AdminScroller />} />
+              <Route path="/photo" element={<AdminPhoto />} />
+              <Route path="/gallery" element={<AdminGallery />} />
+              <Route path="/feature" element={<AdminFeature />} />
+              <Route path="/community" element={<Admincommunity />} />
             </Routes>
           </div>
         </div>

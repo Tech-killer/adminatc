@@ -23,8 +23,23 @@ const AdminCommunity = () => {
     try {
       const res = await fetch(API_URL);
       const data = await res.json();
-      if (data.success) setSliders(data.data);
-      else setError(data.message);
+      if (data.success) {
+        // Sort sliders: visible items first, then hidden items
+        const sortedSliders = [...(data.data || [])].sort((a, b) => {
+          const aVisible = a.appearance === "Y" || a.appearance === "y" || a.appearance === 1 || a.appearance === "1";
+          const bVisible = b.appearance === "Y" || b.appearance === "y" || b.appearance === 1 || b.appearance === "1";
+          
+          // If visibility status is different, sort by visibility (visible first)
+          if (aVisible !== bVisible) {
+            return bVisible - aVisible; // true (1) - false (0) = 1, false (0) - true (1) = -1
+          }
+          
+          // If same visibility status, sort by ID
+          return a.id - b.id;
+        });
+        
+        setSliders(sortedSliders);
+      } else setError(data.message);
     } catch (err) {
       setError("Error fetching sliders: " + err.message);
     }

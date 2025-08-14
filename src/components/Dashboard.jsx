@@ -40,35 +40,35 @@ const Dashboard = () => {
   const quickActions = [
     {
       title: 'All imp Links',
-      path: '/hero',
+      path: '/admin/hero',
       icon: '🎯',
       description: 'Manage links and important info',
       color: 'border-amber-200 hover:border-amber-400 hover:bg-amber-50'
     },
     {
       title: 'Scroller Content',
-      path: '/scroller',
+      path: '/admin/scroller',
       icon: '📜',
       description: 'Update scrolling texts and headlines',
       color: 'border-orange-200 hover:border-orange-400 hover:bg-orange-50'
     },
     {
       title: 'Gallery - Dignitaries',
-      path: '/photo',
+      path: '/admin/photo',
       icon: '📸',
       description: 'Manage dignitaries and gallery images',
       color: 'border-blue-200 hover:border-blue-400 hover:bg-blue-50'
     },
     {
       title: 'Sub-Dignitaries',
-      path: '/feature',
+      path: '/admin/feature',
       icon: '⭐',
       description: 'Highlight featured personalities',
       color: 'border-yellow-200 hover:border-yellow-400 hover:bg-yellow-50'
     },
     {
       title: 'Community Posts',
-      path: '/community',
+      path: '/admin/community',
       icon: '👥',
       description: 'Manage community engagement posts',
       color: 'border-green-200 hover:border-green-400 hover:bg-green-50'

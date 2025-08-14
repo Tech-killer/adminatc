@@ -33,8 +33,24 @@ export default function Admin() {
       .then(res => res.json())
       .then(data => {
         if (data.success) {
-          setTexts((data.texts || []).sort((a, b) => a.id - b.id));
-          setScrollerImages((data.images || []).sort((a, b) => a.id - b.id));
+          // Sort function to show visible items first, then hidden items
+          const sortData = (items) => {
+            return [...(items || [])].sort((a, b) => {
+              const aVisible = a.appearance === "Y" || a.appearance === "y" || a.appearance === 1 || a.appearance === "1";
+              const bVisible = b.appearance === "Y" || b.appearance === "y" || b.appearance === 1 || b.appearance === "1";
+              
+              // If visibility status is different, sort by visibility (visible first)
+              if (aVisible !== bVisible) {
+                return bVisible - aVisible; // true (1) - false (0) = 1, false (0) - true (1) = -1
+              }
+              
+              // If same visibility status, sort by ID
+              return a.id - b.id;
+            });
+          };
+
+          setTexts(sortData(data.texts || []));
+          setScrollerImages(sortData(data.images || []));
         }
       })
       .catch(err => console.error("Fetch error:", err));
@@ -53,7 +69,21 @@ export default function Admin() {
       .then(res => res.json())
       .then(data => {
         if (data.success) {
-          setTexts([...texts, data.newText].sort((a, b) => a.id - b.id));
+          // Re-sort the updated texts array with visible items first
+          const sortData = (items) => {
+            return [...items].sort((a, b) => {
+              const aVisible = a.appearance === "Y" || a.appearance === "y" || a.appearance === 1 || a.appearance === "1";
+              const bVisible = b.appearance === "Y" || b.appearance === "y" || b.appearance === 1 || b.appearance === "1";
+              
+              if (aVisible !== bVisible) {
+                return bVisible - aVisible;
+              }
+              
+              return a.id - b.id;
+            });
+          };
+
+          setTexts(sortData([...texts, data.newText]));
           setNewText({ text: "", text_mar: "", appearance: "Y" });
         } else alert(data.message);
       })
@@ -70,7 +100,21 @@ export default function Admin() {
       .then(res => res.json())
       .then(data => {
         if (data.success) {
-          setTexts(texts.map(t => t.id === editTextId ? { ...t, ...editTextData } : t));
+          // Re-sort the updated texts array with visible items first
+          const sortData = (items) => {
+            return [...items].sort((a, b) => {
+              const aVisible = a.appearance === "Y" || a.appearance === "y" || a.appearance === 1 || a.appearance === "1";
+              const bVisible = b.appearance === "Y" || b.appearance === "y" || b.appearance === 1 || b.appearance === "1";
+              
+              if (aVisible !== bVisible) {
+                return bVisible - aVisible;
+              }
+              
+              return a.id - b.id;
+            });
+          };
+
+          setTexts(sortData(texts.map(t => t.id === editTextId ? { ...t, ...editTextData } : t)));
           setEditTextId(null);
         } else alert(data.message);
       })
@@ -104,7 +148,21 @@ export default function Admin() {
       .then(res => res.json())
       .then(data => {
         if (data.success) {
-          setScrollerImages([...scrollerImages, data.newImage].sort((a, b) => a.id - b.id));
+          // Re-sort the updated images array with visible items first
+          const sortData = (items) => {
+            return [...items].sort((a, b) => {
+              const aVisible = a.appearance === "Y" || a.appearance === "y" || a.appearance === 1 || a.appearance === "1";
+              const bVisible = b.appearance === "Y" || b.appearance === "y" || b.appearance === 1 || b.appearance === "1";
+              
+              if (aVisible !== bVisible) {
+                return bVisible - aVisible;
+              }
+              
+              return a.id - b.id;
+            });
+          };
+
+          setScrollerImages(sortData([...scrollerImages, data.newImage]));
           setNewImage({ file: null, title: "", description: "", appearance: "Y" });
         } else alert(data.message);
       })
@@ -127,7 +185,21 @@ export default function Admin() {
       .then(res => res.json())
       .then(data => {
         if (data.success) {
-          setScrollerImages(scrollerImages.map(img => img.id === editImageId ? { ...img, ...data.updatedImage } : img));
+          // Re-sort the updated images array with visible items first
+          const sortData = (items) => {
+            return [...items].sort((a, b) => {
+              const aVisible = a.appearance === "Y" || a.appearance === "y" || a.appearance === 1 || a.appearance === "1";
+              const bVisible = b.appearance === "Y" || b.appearance === "y" || b.appearance === 1 || b.appearance === "1";
+              
+              if (aVisible !== bVisible) {
+                return bVisible - aVisible;
+              }
+              
+              return a.id - b.id;
+            });
+          };
+
+          setScrollerImages(sortData(scrollerImages.map(img => img.id === editImageId ? { ...img, ...data.updatedImage } : img)));
           setEditImageId(null);
         } else alert(data.message);
       })

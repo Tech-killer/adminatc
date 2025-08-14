@@ -7,17 +7,17 @@ const Sidebar = () => {
   const menuItems = [
     {
       title: 'Dashboard',
-      path: '/',
+      path: '/dashboard',
       icon: '📊'
     },
     {
       title: 'Content Management',
       items: [
-        { title: 'Scroller', path: '/scroller', icon: '📜' },
-        { title: 'All imp Links', path: '/hero', icon: '🎯' },
-        { title: 'Dignitaries', path: '/photo', icon: '📸' },
-        { title: 'Sub-Dignitaries', path: '/feature', icon: '⭐' },
-        { title: 'Community', path: '/community', icon: '👥' },
+        { title: 'Hero Section', path: '/admin/hero', icon: '🎯' },
+        { title: 'Scroller', path: '/admin/scroller', icon: '📜' },
+        { title: 'Photo Gallery', path: '/admin/photo', icon: '📸' },
+        { title: 'Features', path: '/admin/feature', icon: '⭐' },
+        { title: 'Community', path: '/admin/community', icon: '👥' },
       ]
     }
   ];

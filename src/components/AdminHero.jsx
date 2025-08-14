@@ -28,11 +28,26 @@ const AdminHero = () => {
     try {
       const res = await axios.get(`${API_URL}?action=fetch`);
       if (res.data.success) {
-        // Sort data by ID in ascending order (1, 2, 3, ...)
+        // Sort data: visible items first (status Y), then hidden items (status N), then by ID
+        const sortData = (items) => {
+          return [...(items || [])].sort((a, b) => {
+            const aVisible = (a.Status || a.status) === "Y" || (a.Status || a.status) === "y" || (a.Status || a.status) === 1 || (a.Status || a.status) === "1";
+            const bVisible = (b.Status || b.status) === "Y" || (b.Status || b.status) === "y" || (b.Status || b.status) === 1 || (b.Status || b.status) === "1";
+            
+            // If visibility status is different, sort by visibility (visible first)
+            if (aVisible !== bVisible) {
+              return bVisible - aVisible; // true (1) - false (0) = 1, false (0) - true (1) = -1
+            }
+            
+            // If same visibility status, sort by ID
+            return a.id - b.id;
+          });
+        };
+
         const sortedData = {
-          importantLinks: [...(res.data.data.importantLinks || [])].sort((a, b) => a.id - b.id),
-          notifications: [...(res.data.data.notifications || [])].sort((a, b) => a.id - b.id),
-          employeeCorner: [...(res.data.data.employeeCorner || [])].sort((a, b) => a.id - b.id),
+          importantLinks: sortData(res.data.data.importantLinks),
+          notifications: sortData(res.data.data.notifications),
+          employeeCorner: sortData(res.data.data.employeeCorner),
         };
         
         setData(sortedData);

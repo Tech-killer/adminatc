@@ -33,8 +33,23 @@ export default function AdminPhoto() {
     try {
       const res = await fetch(`${API_URL}?action=read&all=1`, { method: "GET", cache: "no-store" });
       const data = await res.json();
-      if (data.success) setPhotos(Array.isArray(data.photos) ? data.photos : []);
-      else setError(data.message || "Failed to load photos");
+      if (data.success) {
+        // Sort photos: visible items first, then hidden items
+        const sortedPhotos = [...(Array.isArray(data.photos) ? data.photos : [])].sort((a, b) => {
+          const aVisible = a.appearance === "Y" || a.appearance === "y" || a.appearance === 1 || a.appearance === "1";
+          const bVisible = b.appearance === "Y" || b.appearance === "y" || b.appearance === 1 || b.appearance === "1";
+          
+          // If visibility status is different, sort by visibility (visible first)
+          if (aVisible !== bVisible) {
+            return bVisible - aVisible; // true (1) - false (0) = 1, false (0) - true (1) = -1
+          }
+          
+          // If same visibility status, sort by ID
+          return a.id - b.id;
+        });
+        
+        setPhotos(sortedPhotos);
+      } else setError(data.message || "Failed to load photos");
     } catch (err) { setError("Error fetching photos: " + err.message); }
     finally { setLoading(false); }
   };

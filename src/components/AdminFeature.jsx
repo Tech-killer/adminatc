@@ -23,7 +23,22 @@ export default function AdminFeature() {
       const res = await fetch(API_URL, { method: "GET" });
       const data = await readJsonSafe(res);
       if (!res.ok || !data.success) throw new Error(data.message || `HTTP ${res.status}`);
-      setPhotos(data.photos || []);
+      
+      // Sort photos: visible items first, then hidden items
+      const sortedPhotos = [...(data.photos || [])].sort((a, b) => {
+        const aVisible = a.appearance === "Y" || a.appearance === "y" || a.appearance === 1 || a.appearance === "1";
+        const bVisible = b.appearance === "Y" || b.appearance === "y" || b.appearance === 1 || b.appearance === "1";
+        
+        // If visibility status is different, sort by visibility (visible first)
+        if (aVisible !== bVisible) {
+          return bVisible - aVisible; // true (1) - false (0) = 1, false (0) - true (1) = -1
+        }
+        
+        // If same visibility status, sort by ID
+        return a.id - b.id;
+      });
+      
+      setPhotos(sortedPhotos);
       setError(null);
     } catch (e) {
       setError(String(e.message || e));

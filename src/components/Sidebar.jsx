@@ -13,11 +13,11 @@ const Sidebar = () => {
     {
       title: 'Content Management',
       items: [
-        { title: 'Scroller', path: '/admin/scroller', icon: '📜' },
-        { title: 'All imp Links', path: '/admin/hero', icon: '🎯' },
-        { title: 'Dignitaries', path: '/admin/photo', icon: '📸' },
-        { title: 'Sub-Dignitaries', path: '/admin/feature', icon: '⭐' },
-        { title: 'Community', path: '/admin/community', icon: '👥' },
+        { title: 'Scroller', path: '/scroller', icon: '📜' },
+        { title: 'All imp Links', path: '/hero', icon: '🎯' },
+        { title: 'Dignitaries', path: '/photo', icon: '📸' },
+        { title: 'Sub-Dignitaries', path: '/feature', icon: '⭐' },
+        { title: 'Community', path: '/community', icon: '👥' },
       ]
     }
   ];

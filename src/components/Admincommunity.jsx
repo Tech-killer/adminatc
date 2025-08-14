@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 
 const API_URL = "https://www.atcnagpur.com/atc/backend/slider.php";
 
-const Admincommunity = () => {
+const AdminCommunity = () => {
   const [sliders, setSliders] = useState([]);
   const [formData, setFormData] = useState({
     id: null,
-    image_url: "",
+    file: null,
+    existing_image: "",
     title: "",
     sub_title: "",
     community: "",
@@ -33,23 +34,35 @@ const Admincommunity = () => {
     fetchSliders();
   }, []);
 
-  // Input handler
+  // Handle input changes
   const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value, files } = e.target;
+    if (files) {
+      setFormData((prev) => ({ ...prev, file: files[0] }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
-  // Add or Update
+  // Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const method = isEditing ? "PUT" : "POST";
+    setLoading(true);
+    setError(null);
 
     try {
-      setLoading(true);
-      const res = await fetch(API_URL, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const fd = new FormData();
+      if (isEditing) fd.append("id", formData.id);
+      if (formData.file) fd.append("file", formData.file);
+      else if (isEditing) fd.append("existing_image", formData.existing_image);
+
+      fd.append("title", formData.title);
+      fd.append("sub_title", formData.sub_title);
+      fd.append("community", formData.community);
+      fd.append("description", formData.description);
+      fd.append("appearance", formData.appearance);
+
+      const res = await fetch(API_URL, { method: "POST", body: fd });
       const data = await res.json();
       if (data.success) {
         fetchSliders();
@@ -64,21 +77,28 @@ const Admincommunity = () => {
     }
   };
 
-  // Edit
+  // Edit slider
   const handleEdit = (slider) => {
-    setFormData(slider);
+    setFormData({
+      id: slider.id,
+      file: null,
+      existing_image: slider.image_url,
+      title: slider.title,
+      sub_title: slider.sub_title,
+      community: slider.community,
+      description: slider.description,
+      appearance: slider.appearance,
+    });
     setIsEditing(true);
   };
 
-  // Delete
+  // Delete slider
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this slider?")) return;
+    const fd = new FormData();
+    fd.append("delete_id", id);
     try {
-      const res = await fetch(API_URL, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id }),
-      });
+      const res = await fetch(API_URL, { method: "POST", body: fd });
       const data = await res.json();
       if (data.success) fetchSliders();
       else setError(data.message);
@@ -87,11 +107,11 @@ const Admincommunity = () => {
     }
   };
 
-  // Reset
   const resetForm = () => {
     setFormData({
       id: null,
-      image_url: "",
+      file: null,
+      existing_image: "",
       title: "",
       sub_title: "",
       community: "",
@@ -104,15 +124,20 @@ const Admincommunity = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-6">
-      <h2 className="text-3xl font-bold text-indigo-700 mb-6">Admin Community
-      </h2>
-
+      <h2 className="text-3xl font-bold text-indigo-700 mb-6">Admin Community</h2>
       {error && <p className="text-red-600">{error}</p>}
 
       {/* Form */}
       <form onSubmit={handleSubmit} className="bg-white shadow p-6 rounded-xl mb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input name="image_url" value={formData.image_url} onChange={handleChange} placeholder="Image URL" className="border p-2 rounded" required />
+          <input
+            type="file"
+            onChange={handleChange}
+            className="border p-2 rounded"
+          />
+          {formData.existing_image && !formData.file && (
+            <img src={formData.existing_image} alt="Preview" className="w-40 h-40 object-cover rounded mb-2" />
+          )}
           <input name="title" value={formData.title} onChange={handleChange} placeholder="Title" className="border p-2 rounded" required />
           <input name="sub_title" value={formData.sub_title} onChange={handleChange} placeholder="Sub Title" className="border p-2 rounded" />
           <input name="community" value={formData.community} onChange={handleChange} placeholder="Community" className="border p-2 rounded" />
@@ -134,7 +159,7 @@ const Admincommunity = () => {
         </div>
       </form>
 
-      {/* List */}
+      {/* Slider List */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {sliders.map((slider) => (
           <div key={slider.id} className="bg-white shadow rounded p-4">
@@ -143,12 +168,12 @@ const Admincommunity = () => {
             <p className="text-sm text-gray-600">{slider.sub_title}</p>
             <p className="text-sm">{slider.community}</p>
             <p className="text-xs">{slider.description}</p>
-            <span className={`inline-block mt-2 px-3 py-1 rounded-full text-xs ${slider.appearance === "Y" ? "bg-green-200 text-green-700" : "bg-red-200 text-red-700"}`}>
-              {slider.appearance === "Y" ? "Visible" : "Hidden"}
+            <span className={`inline-block mt-2 px-3 py-1 rounded-full text-xs ${slider.appearance==="Y"?"bg-green-200 text-green-700":"bg-red-200 text-red-700"}`}>
+              {slider.appearance==="Y"?"Visible":"Hidden"}
             </span>
             <div className="flex gap-3 mt-3">
-              <button onClick={() => handleEdit(slider)} className="bg-blue-500 text-white px-3 py-1 rounded">Edit</button>
-              <button onClick={() => handleDelete(slider.id)} className="bg-red-500 text-white px-3 py-1 rounded">Delete</button>
+              <button onClick={()=>handleEdit(slider)} className="bg-blue-500 text-white px-3 py-1 rounded">Edit</button>
+              <button onClick={()=>handleDelete(slider.id)} className="bg-red-500 text-white px-3 py-1 rounded">Delete</button>
             </div>
           </div>
         ))}
@@ -157,4 +182,4 @@ const Admincommunity = () => {
   );
 };
 
-export default Admincommunity;
+export default AdminCommunity;

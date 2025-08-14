@@ -5,7 +5,6 @@ import Dashboard from './components/Dashboard';
 import AdminHero from './components/AdminHero';
 import AdminScroller from './components/AdminScroller';
 import AdminPhoto from './components/AdminPhoto';
-import AdminGallery from './components/AdminGallery';
 import AdminFeature from './components/AdminFeature';
 import Admincommunity from './components/Admincommunity';
 
@@ -28,7 +27,6 @@ function App() {
               <Route path="/admin/hero" element={<AdminHero />} />
               <Route path="/admin/scroller" element={<AdminScroller />} />
               <Route path="/admin/photo" element={<AdminPhoto />} />
-              <Route path="/admin/gallery" element={<AdminGallery />} />
               <Route path="/admin/feature" element={<AdminFeature />} />
               <Route path="/admin/community" element={<Admincommunity />} />
             </Routes>
